@@ -1,0 +1,38 @@
+{
+    "food_list": [
+        "Cơm tấm",
+        "Bún bò",
+        "Gà rán",
+        "Bún đậu mắm tôm",
+        "Nem nướng Nha Trang",
+        "Bún chả",
+        "Cháo lòng",
+        "Bún gạo thịt kho tàu"
+    ],
+    "history": {
+        "2025-12-03": [
+            "Bún đậu mắm tôm",
+            "Cơm tấm",
+            "Cơm tấm",
+            "Phở",
+            "Bún bò"
+        ],
+        "2025-12-04": [
+            "Bún đậu mắm tôm",
+            "Gà rán",
+            "Bún bò",
+            "Phở",
+            "Phở"
+        ],
+        "2025-03-13": [
+            "Bún đậu mắm tôm"
+        ],
+        "2025-03-14": [
+            "Bún chả",
+            "Cơm tấm",
+            "Bún chả",
+            "Bún chả",
+            "Cháo lòng"
+        ]
+    }
+}

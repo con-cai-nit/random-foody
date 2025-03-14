@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import random
 import json
+import uuid  # Thêm thư viện để tạo session ID
 from datetime import datetime
 
 TIME_API_URL = "https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Ho_Chi_Minh"
@@ -16,23 +17,38 @@ def get_today_date():
         return datetime.now().strftime("%Y-%m-%d")  # Format giống file JSON
 
 
-# Load dữ liệu món ăn từ file
+# Tạo hoặc lấy session ID duy nhất cho từng người dùng
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())  # Sinh ID ngẫu nhiên
+
+
 def load_food_data():
+    """Load dữ liệu từ file JSON"""
     try:
         with open("food_data.json", "r", encoding="utf-8") as file:
             return json.load(file)
     except FileNotFoundError:
         return {"food_list": ["Cơm tấm", "Bún bò", "Phở", "Hủ tiếu", "Gà rán"], "history": {}}
 
-# Lưu dữ liệu vào file
+
 def save_food_data(data):
+    """Lưu dữ liệu vào file JSON"""
     with open("food_data.json", "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
+
 
 # Load dữ liệu
 food_data = load_food_data()
 today = get_today_date()
 today_date = datetime.strptime(today, "%Y-%m-%d")
+
+# Lấy session ID của người dùng
+session_id = st.session_state.session_id
+if "history" not in food_data:
+    food_data["history"] = {}
+
+if session_id not in food_data["history"]:
+    food_data["history"][session_id] = {}  # Tạo lịch sử riêng cho người dùng mới
 
 # Sidebar: Danh sách món ăn
 st.sidebar.header("📝 Danh sách món ăn")
@@ -68,25 +84,26 @@ day = col3.number_input("Ngày", min_value=1, max_value=31, value=today_date.day
 selected_date = datetime(year, month, day)
 selected_date_str = selected_date.strftime("%Y-%m-%d")
 
-# Lịch sử món ăn
-history = food_data.get("history", {})
+# Lịch sử món ăn của người dùng hiện tại
+user_history = food_data["history"].get(session_id, {})
 
 if selected_date < today_date:
     st.subheader(f"📅 {selected_date_str}")
-    if selected_date_str in history:
+    if selected_date_str in user_history:
         st.write("🍜 Món ăn đã chọn:")
-        for i, food in enumerate(history[selected_date_str]):
+        for i, food in enumerate(user_history[selected_date_str]):
             st.write(f"✅ Lần {i+1}: {food}")
     else:
         st.write("🚫 Ngày này bạn chưa chọn món ăn nào.")
 else:
     st.subheader(f"🎲 Chọn món cho ngày {selected_date_str}")
-    remaining_spins = 5 - len(history.get(selected_date_str, []))
+    remaining_spins = 5 - len(user_history.get(selected_date_str, []))
 
     if remaining_spins > 0:
         if st.button("🔄 Bấm vào đây để chọn món!"):
             chosen_food = random.choice(food_data["food_list"])
-            history.setdefault(selected_date_str, []).append(chosen_food)
+            user_history.setdefault(selected_date_str, []).append(chosen_food)
+            food_data["history"][session_id] = user_history  # Lưu lại lịch sử của user
             save_food_data(food_data)
             st.success(f"🎉 Bạn đã chọn: {chosen_food}")
             remaining_spins -= 1
@@ -94,13 +111,15 @@ else:
     else:
         st.warning("⚠️ Hết lượt quay trong ngày!")
 
-    if selected_date_str in history:
+    if selected_date_str in user_history:
         st.write("📜 Lịch sử món ăn hôm nay:")
-        foods = history[selected_date_str]
+        foods = user_history[selected_date_str]
         cols = st.columns(2)  # Chia thành 2 cột
         for i, food in enumerate(foods):
             with cols[i % 2]:  # Xen kẽ giữa 2 cột
                 st.write(f"✅ Lần {i+1}: {food}")
+
+
                 
                 
 # ====== Thêm phần Chat với trợ lý AI ======

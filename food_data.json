@@ -4,35 +4,22 @@
         "Bún bò",
         "Gà rán",
         "Bún đậu mắm tôm",
-        "Nem nướng Nha Trang",
-        "Bún chả",
-        "Cháo lòng",
-        "Bún gạo thịt kho tàu"
+        "Bún chả"
     ],
     "history": {
-        "2025-12-03": [
-            "Bún đậu mắm tôm",
-            "Cơm tấm",
-            "Cơm tấm",
-            "Phở",
-            "Bún bò"
-        ],
-        "2025-12-04": [
-            "Bún đậu mắm tôm",
-            "Gà rán",
-            "Bún bò",
-            "Phở",
-            "Phở"
-        ],
-        "2025-03-13": [
-            "Bún đậu mắm tôm"
-        ],
-        "2025-03-14": [
-            "Bún chả",
-            "Cơm tấm",
-            "Bún chả",
-            "Bún chả",
-            "Cháo lòng"
-        ]
+        "319867e8-0631-4516-9cf3-404e41bcaedc": {
+            "2025-03-14": [
+                "Cơm tấm",
+                "Bún chả",
+                "Bún đậu mắm tôm"
+            ]
+        },
+        "92f78505-d02d-4cff-b8f2-e755482872be": {
+            "2025-03-14": [
+                "Cơm tấm",
+                "Bún chả",
+                "Bún chả"
+            ]
+        }
     }
 }
